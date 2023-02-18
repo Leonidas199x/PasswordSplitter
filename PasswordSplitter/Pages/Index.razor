@@ -1,0 +1,154 @@
+﻿@page "/"
+
+<PageTitle>Password Splitter</PageTitle>
+
+<h1>Password Splitter</h1>
+
+<p>Enter your password in the password box below, then select the number of characters you need to find</p>
+
+<form>
+    @if (!string.IsNullOrEmpty(CharactersString))
+    {
+        <div class="alert alert-success" role="alert">
+            @CharactersString
+        </div>
+    }
+    <div class="alert alert-danger" role="alert" hidden="@PasswordEmpty">
+        Password is required
+    </div>
+    <div class="alert alert-dance" role="alert" hidden="@HidePasswordLengthError">
+        The max index length is greater than the password length
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" @bind="@Password" id="password" placeholder="Enter Password..." />
+    </div>
+    <br />
+    <div class="alert alert-danger" role="alert" hidden="@HideIndexError">
+        Index must be a valid positive integer
+    </div>
+    <div class="form-group">
+        <label for="characters">Select number of characters:</label>
+        <select id="characters-select" class="form-control" @bind="@Characters">
+            <option>1</option>
+            <option>2</option>
+            <option selected>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+        </select>
+    </div> 
+    <br />
+    <p>Enter the index of the character to be found, im the boxes below</p>
+    @for (int i = 1; i <= Characters; i++)
+    {
+        var id = i;
+        var stringId = $"Character{i}";
+        <div class="form-control">
+            <input type="number" class="form-control" id="@stringId" onchange="@((ChangeEventArgs args) => @AddIndex(args, id))" />
+        </div>
+    }
+    <br />
+    <button type="button" class="btn btn-primary" onclick="@GetCharacters">Get characters</button>
+</form>
+
+@code {
+    public string Password = string.Empty; 
+    public int Characters = 3;
+    public bool PasswordEmpty = true;
+    public bool HideIndexError = true;
+    public bool HidePasswordLengthError = true;
+    public bool HideIndexLengthError = true;
+    public string CharactersString = string.Empty;
+
+    private Dictionary<int, int> Indexes = new Dictionary<int, int>();
+    private List<string> Results = new List<string>();
+
+    void GetCharacters()
+    {
+        Reset();
+
+        var isValid = Validate();
+        if(!isValid)
+        {
+            return;
+        }
+
+        foreach (var entry in Indexes)
+        {
+            var character = Password[entry.Value - 1];
+            Results.Add(character.ToString());
+        }
+
+        CharactersString = string.Join(Environment.NewLine, Results.Select(a => string.Join(", ", a)));
+    }
+
+    void AddIndex(ChangeEventArgs args, int id)
+    {
+        if (args is null)
+        {
+            throw new ArgumentNullException(nameof(args));
+        }
+
+        int value;
+        var isValid = int.TryParse(args.Value.ToString(), out value);
+        if (!isValid)
+        {
+            HideIndexError = false;
+            return;
+        }
+
+        if (Indexes.ContainsKey(id))
+        {
+            Indexes[id] = value;
+            return;
+        }
+
+        Indexes.Add(id, value);
+    }
+
+    void Reset()
+    {
+        CharactersString = string.Empty;
+        PasswordEmpty = true;
+        HidePasswordLengthError = true;
+        HideIndexLengthError = true;
+        Results = new List<string>();
+    }
+
+    bool Validate()
+    {
+        if (string.IsNullOrWhiteSpace(Password))
+        {
+            PasswordEmpty = false;
+            return false;
+        }
+
+        if (!Indexes.Any())
+        {
+            HideIndexLengthError = false;
+            return false;
+        }
+
+        if (Indexes.Values.Max() > Password.Length)
+        {
+            HidePasswordLengthError = false;
+            return false;
+        }
+
+        return true;
+    }
+}
