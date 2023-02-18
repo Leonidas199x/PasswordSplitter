@@ -13,6 +13,9 @@
             @CharactersString
         </div>
     }
+    <div class="alert alert-danger" role="alert" hidden="@HideSetCharactersError">
+        The number of characters required is not a valid integer.
+    </div>
     <div class="alert alert-danger" role="alert" hidden="@PasswordEmpty">
         Password is required
     </div>
@@ -72,6 +75,7 @@
     public bool HideIndexError = true;
     public bool HidePasswordLengthError = true;
     public bool HideIndexLengthError = true;
+    public bool HideSetCharactersError = true;
     public string CharactersString = string.Empty;
 
     private Dictionary<int, int> Indexes = new Dictionary<int, int>();
@@ -158,6 +162,7 @@
         var isValidInt = int.TryParse(args?.Value?.ToString(), out characters);
         if (!isValidInt)
         {
+            HideSetCharactersError = false;
             return;
         }
 
