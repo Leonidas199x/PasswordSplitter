@@ -1,7 +1,0 @@
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\PasswordSplitter.exe
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\appsettings.json
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\PasswordSplitter.dll
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\PasswordSplitter.deps.json
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\PasswordSplitter.runtimeconfig.json
-E:\Projects\PasswordSplitter\PasswordSplitter\obj\Release\net6.0\PubTmp\Out\PasswordSplitter.pdb
